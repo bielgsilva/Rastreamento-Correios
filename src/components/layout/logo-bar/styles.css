@@ -1,0 +1,40 @@
+.logo-bar{
+    position: absolute;
+    top: 20px;
+    width: 100vw;
+    padding: 0px 110px;
+  
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    font-style: normal;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 43px;
+    text-align: center;
+    color: #FFFFFF;
+    cursor: pointer;
+  }
+  .logo-bar span{
+    font-family: 'GangStyle';
+  }
+.logo-bar img{
+    max-width: 50px;
+    margin-right: 10px;
+    }
+@media only screen and (max-width: 480px) {
+.logo-bar{
+  position: relative;
+  width: 100%;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+}
+.logo-bar span{
+  font-family: 'GangStyle';
+  width: auto;
+}
+  
+}
