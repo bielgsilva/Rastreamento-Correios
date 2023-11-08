@@ -2,9 +2,7 @@
 
 Este projeto é uma aplicação web que permite rastrear encomendas enviadas pelo serviço de correio. Ele oferece a funcionalidade de inserir um código de rastreamento e obter informações sobre o status e o histórico de entrega da encomenda. Tamabém é possível receber o status da encomenda via WhatsApp.
 
-## Como Usar
-
-Para começar a rastrear uma encomenda, siga os passos abaixo:
+## Index
 
 1. <a href='#visuProjeto'>Como Visualizar o Projeto </a> <br>
 2. <a href='#execProjeto'>Como Executar o Projeto</a><br>
