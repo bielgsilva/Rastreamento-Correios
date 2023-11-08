@@ -30,7 +30,7 @@ function App() {
   const APIDown = () => (
     <>
       <h2>API fora do ar...</h2>
-      <h3>Aguarde ou entre em contato com o Desenvolvedor</h3>
+      <h3>Entre em contato com o Desenvolvedor</h3>
       <br />
       <button className="att-button" onClick={handleNewSearch}>
         <i className="fa fa-plus-circle"></i> Realizar outra pesquisa
