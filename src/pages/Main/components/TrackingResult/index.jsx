@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import './styles.scss';
+import { enviarAtualizações } from '../../../../services/enviarAtualizações';
 
 
 function formatDate(dateString) {
@@ -10,7 +11,6 @@ function formatDate(dateString) {
 
 function TrackingResult({ data, setSearch }) {
     if (!data || !data.length) return null;
-
     return (
         <>
             <h1>Dados de Rastreio</h1>
@@ -22,10 +22,10 @@ function TrackingResult({ data, setSearch }) {
 
                     return (
                         <li key={status} className="result-item flex-center-column">
+                            {data && <span><strong>Data:</strong> {formatDate(data)}</span>}
                             {origem && <span><strong>Local:</strong> {origem}</span>}
                             {status && <span><strong>Status:</strong> {status}</span>}
                             {local && <span><strong>Local:</strong> {local}</span>}
-                            {data && <span><strong>Data:</strong> {formatDate(data)}</span>}
                         </li>
                     );
                 })}
@@ -33,13 +33,13 @@ function TrackingResult({ data, setSearch }) {
             </ul>
             <br />
             <br />
-            <button className="whatsapp-button">
+            <button className="whatsapp-button" onClick={() => { enviarAtualizações(data) }}>
                 <i className="fa fa-whatsapp"></i> Receber atualizações no WhatsApp
             </button>
             <br />
-            <button className="att-button" onClick={() => setSearch(false)}>
+            <button className="att-button" onClick={() => {setSearch(false)}}>
                 <i className="fa fa-plus-circle"></i> Realizar outra pesquisa
-            </button>
+            </button >
 
         </>
     );
@@ -47,7 +47,7 @@ function TrackingResult({ data, setSearch }) {
 
 TrackingResult.propTypes = {
     data: PropTypes.array.isRequired,
-    setSearch: PropTypes.func.isRequired 
+    setSearch: PropTypes.func.isRequired
 
 };
 
