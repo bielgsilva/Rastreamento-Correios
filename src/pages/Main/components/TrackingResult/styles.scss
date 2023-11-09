@@ -1,4 +1,5 @@
 .result {
+    width: 100%;
     gap: 30px;
     font-size: 16px;
 
@@ -9,24 +10,24 @@
         padding: 10px 15px;
         border-radius: 5px;
         background-color: rgba(255, 255, 255, 0.144);
+        gap: 5px;
 
-        &>li {
 
-            >span {
-                text-align: left;
-                white-space: nowrap;
-           
-            }
+        >span {
+            width: 100%;
+            text-align: left;
         }
+
     }
 }
+
 .whatsapp-button {
-    background-color: green; 
-    color: white; 
-    border: none; 
-    padding: 10px 20px; 
-    border-radius: 5px; 
-    cursor: pointer; 
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
 
     i {
         margin-right: 5px;
@@ -36,13 +37,14 @@
         background-color: #019136;
     }
 }
+
 .att-button {
-    background-color: rgb(0, 0, 0); 
-    color: white; 
-    border: none; 
-    padding: 10px 20px; 
-    border-radius: 5px; 
-    cursor: pointer; 
+    background-color: rgb(0, 0, 0);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
 
     i {
         margin-right: 5px;
@@ -50,5 +52,21 @@
 
     &:hover {
         background-color: #019136;
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 20px;
+    }
+
+    .result {
+        font-size: 12px;
+
+        >span {
+            width: 100%;
+            text-align: left;
+        }
+
     }
 }
