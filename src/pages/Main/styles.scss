@@ -48,11 +48,12 @@
 
 @media (max-width: 768px) {
     .container {
-        padding: 2vh 2vw; /* Ajuste o espaçamento para dispositivos móveis conforme necessário */
+        padding: 2vh 2vw;
+        min-height: 100svh;
     }
 
     .trackingContent {
-        width: 90%; /* Reduza a largura para que o conteúdo não seja muito largo em dispositivos móveis */
-        padding: 30px; /* Ajuste o padding para dispositivos móveis conforme necessário */
+        width: 90%; 
+        padding: 30px; 
     }
 }
