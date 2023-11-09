@@ -93,7 +93,7 @@ function App() {
 
         {!search && !loading && !clearPreviousSearch && <RastrearEncomenda />}
 
-        {search && !loading && <TrackingResult data={data} setSearch={setSearch} />}
+        {search && !loading && <TrackingResult data={data} setSearch={setSearch} setInvalidCode={setInvalidCode} />}
 
         {search && invalidCode && !loading && <InvalidCode />}
 
