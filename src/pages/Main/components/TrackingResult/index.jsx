@@ -2,21 +2,24 @@ import PropTypes from 'prop-types';
 import './styles.scss';
 import { enviarAtualizações } from '../../../../services/enviarAtualizações';
 import { useState } from 'react';
+import { toastSucess } from '../../../../helpers/ToastSuccess';
 
 function formatDate(dateString) {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
     return new Date(dateString).toLocaleDateString(undefined, options);
 }
 
-// Função para formatar o número de telefone
-function formatPhoneNumber(phoneNumber) {
-    const cleaned = ('' + phoneNumber).replace(/\D/g, '');
-    const match = cleaned.match(/^(\d{2})(\d{0,1})(\d{0,4})(\d{0,4})$/);
+
+function formatPhoneNumber(input) {
+    const numericValue = input.replace(/\D/g, '');
+    const match = numericValue.match(/^(\d{2})(\d{0,4})(\d{0,4})$/);
+
     if (match) {
-        const formattedPhoneNumber = `(${match[1]})${match[2] ? ` ${match[2]}` : ''}${match[3] ? ` ${match[3]}` : ''}${match[4] ? `-${match[4]}` : ''}`;
-        return formattedPhoneNumber.trim();
+        const formattedPhoneNumber = `(${match[1]})${match[2] ? ` ${match[2]}` : ''}${match[3] ? `-${match[3]}` : ''}`;
+        return formattedPhoneNumber;
     }
-    return phoneNumber;
+
+    return numericValue;
 }
 
 function TrackingResult({ data, setSearch, setInvalidCode }) {
@@ -28,9 +31,12 @@ function TrackingResult({ data, setSearch, setInvalidCode }) {
     }
 
     const handlePhoneNumberChange = (event) => {
-        // Formatando o número de telefone ao digitar
-        const formattedPhoneNumber = formatPhoneNumber(event.target.value);
-        setPhoneNumber(formattedPhoneNumber);
+        const input = event.target.value;
+        const formattedPhoneNumber = formatPhoneNumber(input);
+
+        if (input.length <= 14) {
+            setPhoneNumber(formattedPhoneNumber);
+        }
     }
 
     if (!data || !data.length) return null;
@@ -57,14 +63,16 @@ function TrackingResult({ data, setSearch, setInvalidCode }) {
                 {whatsapp && (
                     <div className='box-number-whatsapp flex-center-column'>
                         <input
-                            type="text"
+                            type="tel"
                             className="input-whatsapp"
                             name="whatsapp"
-                            placeholder="(XX) X XXXX-XXXX"
+                            placeholder="(XX) XXXX-XXXX"
                             value={phoneNumber}
                             onChange={handlePhoneNumberChange}
+                            pattern="[0-9]*"
+                            autoComplete="off"
                         />
-                        <button className="att-button" onClick={() => { setSearch(false); enviarAtualizações(data); }}>
+                        <button className="att-button" onClick={() => { enviarAtualizações(data, phoneNumber); toastSucess("Dados de rastreios enviados com sucesso");  setPhoneNumber(''); }}>
                             <i className="fa fa-share"></i> Enviar
                         </button>
                     </div>

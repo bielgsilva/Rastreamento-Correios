@@ -1,9 +1,8 @@
 import axios from '../lib/axios';
 
-export const enviarAtualizações = async (data) => {
-  console.log(data);
+export const enviarAtualizações = async (data, phoneNumber) => {
   try {
-    const response = await axios.get(`/whatsapp?data=${JSON.stringify(data)}`);
+    const response = await axios.get(`/whatsapp?data=${JSON.stringify(data)}&phoneNumber=${phoneNumber}`);
     console.log(response);
 
 
