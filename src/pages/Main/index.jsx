@@ -32,6 +32,8 @@ function App() {
       setEmptyHistory(false);
       saveSearchHistoryToLocalStorage();
     }
+
+    console.log(successfulSearchHistory);
   };
   const setSelectedTrackingCode = async (trackingCode) => {
     setSearch(true);
