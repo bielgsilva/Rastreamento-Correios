@@ -1,4 +1,4 @@
-import  { useEffect } from 'react';
+import { useEffect } from 'react';
 import './styles.scss';
 import TrackingResult from './components/TrackingResult';
 import useUser from '../../hooks/useUser';
@@ -24,32 +24,45 @@ function App() {
     setEmptyHistory,
   } = useUser();
 
+  
   const localStorageKey = 'searchHistory';
+  useEffect(() => {
+    const savedHistory = localStorage.getItem(localStorageKey);
+    if (savedHistory) {
+      setSuccessfulSearchHistory(JSON.parse(savedHistory));
+      setEmptyHistory(false)
+    }
+  }, [setEmptyHistory, setSuccessfulSearchHistory]);
+
+
 
   const updateSuccessfulSearchHistory = (trackingCode) => {
     if (!successfulSearchHistory.includes(trackingCode)) {
-      setSuccessfulSearchHistory((prevHistory) => [...prevHistory, trackingCode]);
+      setSuccessfulSearchHistory((prevHistory) => {
+        const updatedHistory = [...prevHistory, trackingCode];
+        localStorage.setItem(localStorageKey, JSON.stringify(updatedHistory));
+        console.log(updatedHistory);
+        return updatedHistory;
+      });
       setEmptyHistory(false);
-      saveSearchHistoryToLocalStorage();
     }
-
-    console.log(successfulSearchHistory);
   };
+
   const setSelectedTrackingCode = async (trackingCode) => {
     setSearch(true);
     setInvalidCode(false);
     setLoading(true);
     setClearPreviousSearch(false);
     setEmptyHistory(false);
-  
+
     try {
       const response = await axios.get(`/rastrear?tracking=${trackingCode}`);
       const statusList = response.data.result.status_list;
       setData(statusList);
-  
+
       if (statusList.length === 0) {
         setInvalidCode(true);
-      } 
+      }
     } catch (error) {
       setApiIsDown(true);
       console.error("Erro ao acessar API", error);
@@ -57,18 +70,9 @@ function App() {
       setLoading(false);
     }
   };
-  
 
-  const saveSearchHistoryToLocalStorage = () => {
-    localStorage.setItem(localStorageKey, JSON.stringify(successfulSearchHistory));
-  };
 
-  useEffect(() => {
-    const savedHistory = localStorage.getItem(localStorageKey);
-    if (savedHistory) {
-      setSuccessfulSearchHistory(JSON.parse(savedHistory));
-    }
-  }, [setSuccessfulSearchHistory]);
+
 
   const handleNewSearch = () => {
     setClearPreviousSearch(false);
