@@ -7,13 +7,18 @@ const SearchHistory = ({ successfulSearchHistory, handleSelectedTrackingCode, ha
     <h2>Histórico de Busca</h2>
     <ul className='flex-center-column'>
       {successfulSearchHistory.map((item) => (
-        <div className="trackingNames flex-center" key={item.trackingCode}>
-          <i className="fa  fa-times-circle" onClick={() => handleDeleteTrackingName(item.trackingName)} style={{ cursor: 'pointer' }}></i>
-          <li onClick={() => handleSelectedTrackingCode(item.trackingCode)} style={{ cursor: 'pointer' }}>
-            {item.trackingName}
-          </li>
-          <i className="fa fa-pencil-square-o" onClick={() => handleEdit(item.trackingName)} style={{ cursor: 'pointer' }}></i>
-        </div>
+        <>
+          <div className="trackingNames flex-center-column" key={item.trackingCode}>
+            <div className='trackingNames flex-center'>
+              <i className="fa  fa-times-circle" onClick={() => handleDeleteTrackingName(item.trackingName)} style={{ cursor: 'pointer' }}></i>
+              <li onClick={() => handleSelectedTrackingCode(item.trackingCode)} style={{ cursor: 'pointer' }}>
+                {item.trackingName}
+              </li>
+              <i className="fa fa-pencil-square-o" onClick={() => handleEdit(item.trackingName)} style={{ cursor: 'pointer' }}></i>
+            </div>
+            <hr />
+          </div>
+        </>
       ))}
     </ul>
   </div>
