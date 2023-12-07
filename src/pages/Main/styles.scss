@@ -1,9 +1,9 @@
 .container {
     gap: 30px;
     width: 100%;
-    min-height:100vh;
+    min-height: 100vh;
     padding: 5vh 5vw;
-   
+
 }
 
 
@@ -45,6 +45,28 @@
 
 }
 
+.searchHistory {
+    width: 100%;
+    gap: 10px;
+
+    >ul{
+        width: 100%;
+        gap: 10px;
+    }
+    .trackingNames {
+        width: 100%;
+        justify-content: space-between;
+        gap: 30px;
+
+        >li {
+            list-style: none;
+        }
+        >i{
+            font-size: 20px;
+        }
+    }
+
+}
 
 @media (max-width: 768px) {
     .container {
@@ -53,7 +75,7 @@
     }
 
     .trackingContent {
-        width: 90%; 
-        padding: 30px; 
+        width: 90%;
+        padding: 30px;
     }
 }

@@ -3,52 +3,70 @@ import './styles.scss';
 import TrackingResult from './components/TrackingResult';
 import useUser from '../../hooks/useUser';
 import axios from '../../lib/axios';
+import EditModal from './components/EditModal/index';
+import SearchHistory from './components/SearchHistory';
+import InvalidCodeMessage from './components/InvalidCodeMessage';
+import APIDownMessage from './components/APIDownMessage';
+import RastrearEncomenda from './components/RastrearEncomenda';
 
 function App() {
   const {
-    data,
-    setData,
-    search,
-    setSearch,
-    invalidCode,
-    setInvalidCode,
-    apiIsDown,
-    setApiIsDown,
-    loading,
-    setLoading,
-    clearPreviousSearch,
-    setClearPreviousSearch,
-    successfulSearchHistory,
-    setSuccessfulSearchHistory,
-    emptyHistory,
-    setEmptyHistory,
+    data, setData,
+    search, setSearch,
+    invalidCode, setInvalidCode,
+    apiIsDown, setApiIsDown,
+    loading, setLoading,
+    clearPreviousSearch, setClearPreviousSearch,
+    successfulSearchHistory, setSuccessfulSearchHistory,
+    emptyHistory, setEmptyHistory,
+    editModalOpen, setEditModalOpen,
+    selectedTrackingCode, setSelectedTrackingCode,
+
   } = useUser();
 
-  
-  const localStorageKey = 'searchHistory';
   useEffect(() => {
-    const savedHistory = localStorage.getItem(localStorageKey);
+    const savedHistory = localStorage.getItem('searchHistory');
     if (savedHistory) {
       setSuccessfulSearchHistory(JSON.parse(savedHistory));
-      setEmptyHistory(false)
+      setEmptyHistory(false);
     }
   }, [setEmptyHistory, setSuccessfulSearchHistory]);
 
+  const submitHandler = async (event) => {
+    event.preventDefault();
+    setSearch(true);
+    setInvalidCode(false);
+    setLoading(true);
 
+    if (clearPreviousSearch) {
+      setData([]);
+      setClearPreviousSearch(false);
+    }
 
-  const updateSuccessfulSearchHistory = (trackingCode) => {
-    if (!successfulSearchHistory.includes(trackingCode)) {
-      setSuccessfulSearchHistory((prevHistory) => {
-        const updatedHistory = [...prevHistory, trackingCode];
-        localStorage.setItem(localStorageKey, JSON.stringify(updatedHistory));
-        console.log(updatedHistory);
-        return updatedHistory;
-      });
-      setEmptyHistory(false);
+    let formData = new FormData(event.target);
+    let formDataObject = Object.fromEntries(formData);
+
+    try {
+      const response = await axios.get(`/rastrear?tracking=${formDataObject.tracking}`);
+      const statusList = response.data.result.status_list;
+      setData(statusList);
+
+      if (statusList.length === 0) {
+        setInvalidCode(true);
+      } else {
+        const trackingName = formDataObject.tracking;
+        handleUpdateSuccessfulSearchHistory(formDataObject.tracking, trackingName);
+        console.log(formDataObject.tracking, trackingName);
+      }
+    } catch (error) {
+      setApiIsDown(true);
+      console.error("Erro ao acessar API", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const setSelectedTrackingCode = async (trackingCode) => {
+  const handleSelectedTrackingCode = async (trackingCode) => {
     setSearch(true);
     setInvalidCode(false);
     setLoading(true);
@@ -65,14 +83,48 @@ function App() {
       }
     } catch (error) {
       setApiIsDown(true);
-      console.error("Erro ao acessar API", error);
     } finally {
       setLoading(false);
     }
   };
 
 
+  const handleUpdateSuccessfulSearchHistory = (trackingCode, trackingName) => {
 
+    if (!successfulSearchHistory.some(item => item.trackingCode === trackingCode)) {
+
+      setSuccessfulSearchHistory((prevHistory) => {
+        const updatedHistory = [...prevHistory, { trackingCode, trackingName }];
+        localStorage.setItem('searchHistory', JSON.stringify(updatedHistory));
+        return updatedHistory;
+      });
+
+      setEmptyHistory(false);
+    }
+  };
+
+
+  const handleEdit = (trackingName) => {
+    console.log(trackingName);
+    setSelectedTrackingCode(trackingName);
+    setEditModalOpen(true);
+  };
+
+  const handleSaveEdit = (editedTrackingName) => {
+    console.log(editedTrackingName);
+
+    setSuccessfulSearchHistory((prevHistory) => {
+      console.log(prevHistory);
+      const updatedHistory = prevHistory.map((item) =>
+
+        item.trackingName === selectedTrackingCode
+          ? { trackingCode: item.trackingCode, trackingName: editedTrackingName }
+          : item
+      );
+      localStorage.setItem('searchHistory', JSON.stringify(updatedHistory));
+      return updatedHistory;
+    });
+  };
 
   const handleNewSearch = () => {
     setClearPreviousSearch(false);
@@ -80,95 +132,41 @@ function App() {
     setLoading(false);
   };
 
-  const submitHandler = async (event) => {
-    event.preventDefault();
-    setSearch(true);
-    setInvalidCode(false);
-    setLoading(true);
-
-    if (clearPreviousSearch) {
-      setData([]);
-      setClearPreviousSearch(false);
-    }
-
-    let formData = new FormData(event.target);
-    let data = Object.fromEntries(formData);
-
-    try {
-      const response = await axios.get(`/rastrear?tracking=${data.tracking}`);
-      const statusList = response.data.result.status_list;
-      setData(statusList);
-
-      if (statusList.length === 0) {
-        setInvalidCode(true);
-      } else {
-        updateSuccessfulSearchHistory(data.tracking);
-      }
-    } catch (error) {
-      setApiIsDown(true);
-      console.error("Erro ao acessar API", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const HistoricoDeBusca = () => (
-    <>
-      <h2>Histórico de Busca</h2>
-      <ul>
-        {successfulSearchHistory.map((trackingCode) => (
-          <li key={trackingCode} onClick={() => setSelectedTrackingCode(trackingCode)} style={{ cursor: 'pointer' }}>
-            {trackingCode}
-          </li>
-        ))}
-      </ul>
-    </>
-  );
-
-  const InvalidCode = () => (
-    <>
-      <h2>Código de Rastreio inválido</h2>
-      <br />
-      <button className="att-button" onClick={handleNewSearch}>
-        <i className="fa fa-plus-circle"></i> Realizar outra pesquisa
-      </button>
-    </>
-  );
-
-  const APIDown = () => (
-    <>
-      <h2>API fora do ar...</h2>
-      <h3>Entre em contato com o Desenvolvedor</h3>
-      <br />
-      <button className="att-button" onClick={handleNewSearch}>
-        <i className="fa fa-plus-circle"></i> Realizar outra pesquisa
-      </button>
-    </>
-  );
-
-  const RastrearEncomenda = () => (
-    <form onSubmit={submitHandler} className="flex-center-column">
-      <h1>Rastrear Encomenda</h1>
-      <input type="text" className="form-control" name="tracking" />
-      <button type="submit" className="btn btn-primary">
-        Rastrear
-      </button>
-    </form>
-  );
 
   return (
     <div className="container flex-center-column overlay">
-      <div className="trackingContent flex-center-column">
-        {loading && <h2>Carregando...</h2>}
-        {!search && !loading && !clearPreviousSearch && <RastrearEncomenda />}
-        {search && !loading && <TrackingResult data={data} setSearch={setSearch} setInvalidCode={setInvalidCode} />}
-        {search && invalidCode && !loading && <InvalidCode />}
-        {search && apiIsDown && !loading && <APIDown />}
-      </div>
+      {!editModalOpen &&
+        <>
+          <div className="trackingContent flex-center-column">
+            {loading && <h2>Carregando...</h2>}
+            {!search && !loading && !clearPreviousSearch && <RastrearEncomenda submitHandler={submitHandler} />}
+            {search && !loading && <TrackingResult data={data} setSearch={setSearch} setInvalidCode={setInvalidCode} />}
+            {search && invalidCode && !loading && <InvalidCodeMessage handleNewSearch={handleNewSearch} />}
+            {search && apiIsDown && !loading && <APIDownMessage handleNewSearch={handleNewSearch} />}
+          </div>
 
-      <div className="trackingContent flex-center-column">
-        {!emptyHistory ? <HistoricoDeBusca /> : <h3>Histórico de busca está vazio</h3>}
-      </div>
+          <div className="trackingContent flex-center-column">
+            {!emptyHistory
+              ?
+              <SearchHistory
+                successfulSearchHistory={successfulSearchHistory}
+                handleSelectedTrackingCode={handleSelectedTrackingCode}
+                handleEdit={handleEdit}
+              />
+
+              : <h3>Histórico de busca está vazio</h3>}
+          </div>
+        </>
+      }
+
+      {editModalOpen &&
+        <EditModal
+          isOpen={editModalOpen}
+          onClose={() => setEditModalOpen(false)}
+          handleSaveEdit={handleSaveEdit}
+          selectedTrackingCode={selectedTrackingCode}
+        />
+      }
     </div>
   );
 }

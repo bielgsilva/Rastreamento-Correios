@@ -11,6 +11,9 @@ export default function ValuesProvider() {
   const [emptyHistory, setEmptyHistory] = useState(true);
   const [successfulSearchHistory, setSuccessfulSearchHistory] = useState([]);
 
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedTrackingCode, setSelectedTrackingCode] = useState('')
+
 
   return ({
     data, setData,
@@ -20,7 +23,9 @@ export default function ValuesProvider() {
     clearPreviousSearch, setClearPreviousSearch,
     apiIsDown, setApiIsDown,
     successfulSearchHistory, setSuccessfulSearchHistory,
-    emptyHistory, setEmptyHistory
+    emptyHistory, setEmptyHistory,
+    editModalOpen, setEditModalOpen,
+    selectedTrackingCode, setSelectedTrackingCode
 
   });
 }
