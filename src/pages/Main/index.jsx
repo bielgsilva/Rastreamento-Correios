@@ -110,9 +110,19 @@ function App() {
     setEditModalOpen(true);
   };
 
-  const handleSaveEdit = (editedTrackingName) => {
-    console.log(editedTrackingName);
+  const handleDeleteTrackingName = (trackingName) => {
+    const updatedHistory = successfulSearchHistory.filter(item => item.trackingName !== trackingName);
+    localStorage.setItem('searchHistory', JSON.stringify(updatedHistory));
+    setSuccessfulSearchHistory(updatedHistory);
 
+    if (updatedHistory.length === 0) {
+      setEmptyHistory(true);
+    }
+
+  };
+
+
+  const handleSaveEdit = (editedTrackingName) => {
     setSuccessfulSearchHistory((prevHistory) => {
       console.log(prevHistory);
       const updatedHistory = prevHistory.map((item) =>
@@ -152,6 +162,7 @@ function App() {
                 successfulSearchHistory={successfulSearchHistory}
                 handleSelectedTrackingCode={handleSelectedTrackingCode}
                 handleEdit={handleEdit}
+                handleDeleteTrackingName={handleDeleteTrackingName}
               />
 
               : <h3>Histórico de busca está vazio</h3>}
