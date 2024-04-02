@@ -75,7 +75,7 @@ const MercadoPagoPage = ({ handleCloseMercadoPagoModal }) => {
         notification_url: "https://eorpjcvcjvhqnq6.m.pipedream.net",
       };
 
-      const response = await api.post("v1/payments", body);
+      const response = await api.post("/v1/payments", body);
 
       console.log(response)
 
