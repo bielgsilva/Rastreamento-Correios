@@ -144,7 +144,7 @@ function App() {
 
 
   return (
-    <div className="container flex-center-column overlay">
+    <div className="container flex-center-column">
       {!editModalOpen &&
         <>
           <div className="trackingContent flex-center-column">
@@ -155,7 +155,7 @@ function App() {
             {search && apiIsDown && !loading && <APIDownMessage handleNewSearch={handleNewSearch} />}
           </div>
 
-          <div className="trackingContent flex-center-column">
+          <div className="trackingContent">
             {!emptyHistory
               ?
               <SearchHistory

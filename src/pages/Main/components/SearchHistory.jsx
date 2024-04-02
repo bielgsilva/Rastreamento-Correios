@@ -1,27 +1,25 @@
-// SearchHistory.js
 import PropTypes from 'prop-types';
-import '../styles.scss';
 
 const SearchHistory = ({ successfulSearchHistory, handleSelectedTrackingCode, handleEdit, handleDeleteTrackingName }) => (
-  <div className='searchHistory flex-center-column'>
+  <>
     <h2>Histórico de Busca</h2>
-    <ul className='flex-center-column'>
+    <ul >
       {successfulSearchHistory.map((item) => (
-        <>
-          <div className="trackingNames flex-center-column" key={item.trackingCode}>
-            <div className='trackingNames flex-center'>
-              <i className="fa  fa-times-circle" onClick={() => handleDeleteTrackingName(item.trackingName)} style={{ cursor: 'pointer' }}></i>
-              <li onClick={() => handleSelectedTrackingCode(item.trackingCode)} style={{ cursor: 'pointer' }}>
-                {item.trackingName}
-              </li>
-              <i className="fa fa-pencil-square-o" onClick={() => handleEdit(item.trackingName)} style={{ cursor: 'pointer' }}></i>
-            </div>
-            <hr />
+        <div className="trackingNames flex-center-column" key={item.trackingCode}>
+          <div className='trackingNames flex-center'>
+            <i className="fa  fa-times-circle" onClick={() => handleDeleteTrackingName(item.trackingName)} style={{ cursor: 'pointer' }}></i>
+            <li onClick={() => handleSelectedTrackingCode(item.trackingCode)} style={{ cursor: 'pointer' }}>
+              {item.trackingName}
+            </li>
+            <i className="fa fa-pencil-square-o" onClick={() => handleEdit(item.trackingName)} style={{ cursor: 'pointer' }}></i>
           </div>
-        </>
+          <hr />
+        </div>
+
       ))}
     </ul>
-  </div>
+  </ >
+
 );
 
 SearchHistory.propTypes = {

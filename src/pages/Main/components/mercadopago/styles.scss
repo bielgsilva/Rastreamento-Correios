@@ -1,0 +1,70 @@
+.mercadopagoModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  color: black;
+
+  &-inputs {
+    position: relative;
+    gap: 20px;
+    background-color: white;
+    padding: 50px;
+    border-radius: 5px;
+
+    >form {
+      gap: 10px;
+
+      >.flex-center-column {
+
+        >label {
+          text-align: left;
+          align-self: flex-start;
+        }
+      }
+
+      >button {
+        margin-top: 20PX;
+      }
+    }
+
+
+
+  }
+
+
+
+
+
+
+  .loading {
+    font-size: 18px;
+    color: black;
+  }
+
+  .close-button {
+    width: auto;
+
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: black;
+
+  }
+
+
+}
+
+.checkout-page {
+  width: 100%;
+  justify-content: space-between;
+  padding: 0;
+}

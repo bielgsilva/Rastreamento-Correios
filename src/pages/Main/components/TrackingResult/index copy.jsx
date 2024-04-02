@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import './styles.scss';
+import { enviarAtualizações } from '../../../../services/enviarAtualizações';
 import { useState } from 'react';
-import MercadoPagoPage from '../mercadopago/index';
+import { toastSucess } from '../../../../helpers/ToastSuccess';
 
 function TrackingResult({ data, setSearch, setInvalidCode }) {
     const [whatsapp, setWhatsapp] = useState(false);
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [showMercadoPagoModal, setShowMercadoPagoModal] = useState(false); // Adicione este estado para controlar o modal
 
     const formatDate = dateString => new Date(dateString).toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit' });
 
@@ -26,19 +26,9 @@ function TrackingResult({ data, setSearch, setInvalidCode }) {
         if (input.length <= 16) setPhoneNumber(formattedPhoneNumber);
     };
 
-    const handleOpenMercadoPagoModal = () => {
-        setShowMercadoPagoModal(true);
-    };
-
-    const handleCloseMercadoPagoModal = () => {
-        setShowMercadoPagoModal(false);
-    };
-
     if (!data || !data.length) return null;
 
     return (
-
-
         <div className='trackingResult flex-center-column'>
             <h1>Dados de Rastreio</h1>
             <ul className="result flex-center-column">
@@ -65,12 +55,13 @@ function TrackingResult({ data, setSearch, setInvalidCode }) {
                             pattern="[0-9]*"
                             autoComplete="off"
                         />
-                        <button className="att-button" onClick={handleOpenMercadoPagoModal}>
+                        <button className="att-button" onClick={() => {
+                            enviarAtualizações(data, phoneNumber);
+                            toastSucess("Dados de rastreios enviados com sucesso");
+                            setPhoneNumber('');
+                        }}>
                             <i className="fa fa-share"></i> Enviar
                         </button>
-                        {showMercadoPagoModal &&
-                            <MercadoPagoPage
-                                handleCloseMercadoPagoModal={handleCloseMercadoPagoModal} />}
                     </div>
                 )}
             </button>
@@ -78,7 +69,6 @@ function TrackingResult({ data, setSearch, setInvalidCode }) {
                 <i className="fa fa-plus-circle"></i> Realizar outra pesquisa
             </button>
         </div>
-
     );
 }
 
