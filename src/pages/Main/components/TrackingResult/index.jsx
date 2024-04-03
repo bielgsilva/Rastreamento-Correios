@@ -36,20 +36,27 @@ function TrackingResult({ data, setSearch, setInvalidCode }) {
 
     if (!data || !data.length) return null;
 
+    const uniqueKeys = new Set();
+
     return (
 
 
         <div className='trackingResult flex-center-column'>
             <h1>Dados de Rastreio</h1>
             <ul className="result flex-center-column">
-                {data.map(({ data, origem, local, status }) => (
-                    <li key={status} className="result-item flex-center-column">
-                        {data && <span><strong>Data:</strong> {formatDate(data)}</span>}
-                        {origem && <span><strong>Origem:</strong> {origem}</span>}
-                        {status && <span><strong>Status:</strong> {status}</span>}
-                        {local && <span><strong>Local:</strong> {local}</span>}
-                    </li>
-                ))}
+                {data.map(({ data, origem, local, status, id }) => {
+                    console.log(local);
+                    if (uniqueKeys.has(status)) return null;
+                    uniqueKeys.add(status);
+                    return (
+                        <li key={id} className="result-item flex-center-column">
+                            {data && <span><strong>Data:</strong> {formatDate(data)}</span>}
+                            {origem && <span><strong>Origem:</strong> {origem}</span>}
+                            {local && <span><strong>Local:</strong> {local}</span>}
+                            {status && <span><strong>Status:</strong> {status}</span>}
+                        </li>
+                    );
+                })}
             </ul>
             <button className="whatsapp-button flex-center-column" onClick={() => setWhatsapp(true)}>
                 <div><i className="fa fa-whatsapp"></i> Receber atualizações no WhatsApp</div>

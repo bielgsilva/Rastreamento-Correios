@@ -145,39 +145,54 @@ function App() {
 
   return (
     <div className="container flex-center-column">
-      {!editModalOpen &&
-        <>
-          <div className="trackingContent flex-center-column">
-            {loading && <h2>Carregando...</h2>}
-            {!search && !loading && !clearPreviousSearch && <RastrearEncomenda submitHandler={submitHandler} />}
-            {search && !loading && <TrackingResult data={data} setSearch={setSearch} setInvalidCode={setInvalidCode} />}
-            {search && invalidCode && !loading && <InvalidCodeMessage handleNewSearch={handleNewSearch} />}
-            {search && apiIsDown && !loading && <APIDownMessage handleNewSearch={handleNewSearch} />}
-          </div>
+      <div className="overlay flex-center-column">
+        {!editModalOpen &&
+          <>
+            <div className="trackingContent flex-center-column">
+              {loading && <h2>Carregando...</h2>}
 
-          <div className="trackingContent">
-            {!emptyHistory
-              ?
-              <SearchHistory
-                successfulSearchHistory={successfulSearchHistory}
-                handleSelectedTrackingCode={handleSelectedTrackingCode}
-                handleEdit={handleEdit}
-                handleDeleteTrackingName={handleDeleteTrackingName}
-              />
+              {!search && !loading && !clearPreviousSearch &&
+                <RastrearEncomenda submitHandler={submitHandler}
+                />}
 
-              : <h3>Histórico de busca está vazio</h3>}
-          </div>
-        </>
-      }
+              {search && !loading &&
+                <TrackingResult data={data} setSearch={setSearch} setInvalidCode={setInvalidCode} />
+              }
 
-      {editModalOpen &&
-        <EditModal
-          isOpen={editModalOpen}
-          onClose={() => setEditModalOpen(false)}
-          handleSaveEdit={handleSaveEdit}
-          selectedTrackingCode={selectedTrackingCode}
-        />
-      }
+              {search && invalidCode && !loading &&
+                <InvalidCodeMessage handleNewSearch={handleNewSearch}
+                />}
+
+              {search && apiIsDown && !loading &&
+                <APIDownMessage handleNewSearch={handleNewSearch}
+                />}
+
+            </div>
+
+            <div className="trackingContent">
+              {!emptyHistory
+                ?
+                <SearchHistory
+                  successfulSearchHistory={successfulSearchHistory}
+                  handleSelectedTrackingCode={handleSelectedTrackingCode}
+                  handleEdit={handleEdit}
+                  handleDeleteTrackingName={handleDeleteTrackingName}
+                />
+
+                : <h3>Histórico de busca está vazio</h3>}
+            </div>
+          </>
+        }
+
+        {editModalOpen &&
+          <EditModal
+            isOpen={editModalOpen}
+            onClose={() => setEditModalOpen(false)}
+            handleSaveEdit={handleSaveEdit}
+            selectedTrackingCode={selectedTrackingCode}
+          />
+        }
+      </div>
     </div>
   );
 }

@@ -1,14 +1,24 @@
 .container {
-    gap: 30px;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    min-height: 100vh;
-    height: 100%;
-    padding: 5vh 5vw;
     background: url("https://png.pngtree.com/thumb_back/fw800/background/20230624/pngtree-mail-sorting-system-3d-illustration-of-parcels-being-organized-and-sorted-image_3668517.jpg");
-    z-index: 1;
     background-position: center;
     background-size: cover;
+    
 }
+
+.overlay {
+    position: relative;
+    min-height: 100vh;
+    height: 100%;
+    width: 100%;
+    gap: 30px;
+    background-color: rgba(0, 0, 0, 0.548);
+    padding: 5vh 5vw;
+}
+
 
 
 .trackingContent {
@@ -16,10 +26,7 @@
     padding: 40px 30px;
     text-align: center;
     border-radius: 10px;
-    background-color: rgba(255, 255, 0, 1);
-
-
-
+    background-color: rgba(255, 255, 0, 0.85);
 }
 
 
@@ -51,13 +58,21 @@
 
 
 @media (max-width: 768px) {
-    .container {
-        padding: 2vh 2vw;
-        min-height: 100dvh;
+    .overlay {
+        position: relative;
+        min-height: 100vh;
+        height: auto;
+        width: 100%;
+        gap: 30px;
+        background-color: rgba(0, 0, 0, 0.548);
+        padding: 1vh 1vw;
     }
-
     .trackingContent {
-        width: 90%;
-        padding: 30px;
+        width: 80%;
+        padding: 40px 30px;
+
     }
+    
+    
+   
 }

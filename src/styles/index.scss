@@ -48,7 +48,6 @@ button {
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
-  cursor: pointer;
 
   i {
     margin-right: 5px;
@@ -60,4 +59,5 @@ button {
 }
 body.modal-open {
   overflow: hidden;
+
 }
